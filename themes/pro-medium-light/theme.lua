@@ -10,7 +10,8 @@
 
 theme            = {}
 theme.icons      = os.getenv("HOME") .. "/.config/awesome/themes/pro-medium-light/icons/"
-theme.wallpaper  = os.getenv("HOME") .. "/.config/awesome/themes/pro-medium-light/wallpapers/pro-medium-light-shadow.png"
+local f          = io.popen("sh -c \"find ~/Wallpapers -name '*' | tail -n +2 | shuf -n 1 | xargs echo -n\"")
+theme.wallpaper = f:read("*all")
 theme.panel      = "png:" .. theme.icons .. "/panel/panel.png"
 theme.font       = "Terminus 9"
 

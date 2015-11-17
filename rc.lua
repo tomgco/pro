@@ -8,10 +8,11 @@ local vicious    = require("vicious")
 local naughty    = require("naughty")
 local lain       = require("lain")
 local cyclefocus = require('cyclefocus')
+require("debian.menu")
 
 -- | Theme | --
 
-local theme = "pro-dark"
+local theme = "pro-medium-light"
 
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/" .. theme .. "/theme.lua")
 
@@ -45,10 +46,6 @@ awful.util.spawn = function (s)
     oldspawn(s, false)
 end
 
--- Java GUI's fix:
-
-awful.util.spawn_with_shell("wmname LG3D")
-
 -- | Variable definitions | --
 
 local home   = os.getenv("HOME")
@@ -56,12 +53,12 @@ local exec   = function (s) oldspawn(s, false) end
 local shexec = awful.util.spawn_with_shell
 
 modkey        = "Mod4"
-terminal      = "termite"
-tmux          = "termite -e tmux"
-termax        = "termite --geometry 1680x1034+0+22"
-rootterm      = "sudo -i termite"
-browser       = "firefox"
-filemanager   = "spacefm"
+terminal      = "lxterminal"
+tmux          = "lxterminal -e tmux"
+termax        = "lxterminal --geometry 1680x1034+0+22"
+rootterm      = "sudo -i lxterminal"
+browser       = "google-chrome"
+filemanager   = "thunar"
 configuration = termax .. ' -e "vim -O $HOME/.config/awesome/rc.lua $HOME/.config/awesome/themes/' ..theme.. '/theme.lua"'
 
 -- | Table of layouts | --
@@ -102,6 +99,7 @@ menu_main = {
 
 mainmenu = awful.menu({ items = {
   { " awesome",       menu_main   },
+  { " debian",        debian.menu.Debian_menu.Debian },
   { " file manager",  filemanager },
   { " root terminal", rootterm    },
   { " user terminal", terminal    }}})
@@ -136,77 +134,77 @@ widget_display_c:set_image(beautiful.widget_display_c)
 
 -- | MPD | --
 
-prev_icon = wibox.widget.imagebox()
-prev_icon:set_image(beautiful.mpd_prev)
-next_icon = wibox.widget.imagebox()
-next_icon:set_image(beautiful.mpd_nex)
-stop_icon = wibox.widget.imagebox()
-stop_icon:set_image(beautiful.mpd_stop)
-pause_icon = wibox.widget.imagebox()
-pause_icon:set_image(beautiful.mpd_pause)
-play_pause_icon = wibox.widget.imagebox()
-play_pause_icon:set_image(beautiful.mpd_play)
-mpd_sepl = wibox.widget.imagebox()
-mpd_sepl:set_image(beautiful.mpd_sepl)
-mpd_sepr = wibox.widget.imagebox()
-mpd_sepr:set_image(beautiful.mpd_sepr)
+-- prev_icon = wibox.widget.imagebox()
+-- prev_icon:set_image(beautiful.mpd_prev)
+-- next_icon = wibox.widget.imagebox()
+-- next_icon:set_image(beautiful.mpd_nex)
+-- stop_icon = wibox.widget.imagebox()
+-- stop_icon:set_image(beautiful.mpd_stop)
+-- pause_icon = wibox.widget.imagebox()
+-- pause_icon:set_image(beautiful.mpd_pause)
+-- play_pause_icon = wibox.widget.imagebox()
+-- play_pause_icon:set_image(beautiful.mpd_play)
+-- mpd_sepl = wibox.widget.imagebox()
+-- mpd_sepl:set_image(beautiful.mpd_sepl)
+-- mpd_sepr = wibox.widget.imagebox()
+-- mpd_sepr:set_image(beautiful.mpd_sepr)
 
-mpdwidget = lain.widgets.mpd({
-    settings = function ()
-        if mpd_now.state == "play" then
-            mpd_now.artist = mpd_now.artist:upper():gsub("&.-;", string.lower)
-            mpd_now.title = mpd_now.title:upper():gsub("&.-;", string.lower)
-            widget:set_markup(markup.font("Tamsyn 3", " ")
-                              .. markup.font("Tamsyn 7",
-                              mpd_now.artist
-                              .. " - " ..
-                              mpd_now.title
-                              .. markup.font("Tamsyn 2", " ")))
-            play_pause_icon:set_image(beautiful.mpd_pause)
-            mpd_sepl:set_image(beautiful.mpd_sepl)
-            mpd_sepr:set_image(beautiful.mpd_sepr)
-        elseif mpd_now.state == "pause" then
-            widget:set_markup(markup.font("Tamsyn 4", "") ..
-                              markup.font("Tamsyn 7", "MPD PAUSED") ..
-                              markup.font("Tamsyn 10", ""))
-            play_pause_icon:set_image(beautiful.mpd_play)
-            mpd_sepl:set_image(beautiful.mpd_sepl)
-            mpd_sepr:set_image(beautiful.mpd_sepr)
-        else
-            widget:set_markup("")
-            play_pause_icon:set_image(beautiful.mpd_play)
-            mpd_sepl:set_image(nil)
-            mpd_sepr:set_image(nil)
-        end
-    end
-})
+-- mpdwidget = lain.widgets.mpd({
+--     settings = function ()
+--         if mpd_now.state == "play" then
+--             mpd_now.artist = mpd_now.artist:upper():gsub("&.-;", string.lower)
+--             mpd_now.title = mpd_now.title:upper():gsub("&.-;", string.lower)
+--             widget:set_markup(markup.font("Tamsyn 3", " ")
+--                               .. markup.font("Tamsyn 7",
+--                               mpd_now.artist
+--                               .. " - " ..
+--                               mpd_now.title
+--                               .. markup.font("Tamsyn 2", " ")))
+--             play_pause_icon:set_image(beautiful.mpd_pause)
+--             mpd_sepl:set_image(beautiful.mpd_sepl)
+--             mpd_sepr:set_image(beautiful.mpd_sepr)
+--         elseif mpd_now.state == "pause" then
+--             widget:set_markup(markup.font("Tamsyn 4", "") ..
+--                               markup.font("Tamsyn 7", "MPD PAUSED") ..
+--                               markup.font("Tamsyn 10", ""))
+--             play_pause_icon:set_image(beautiful.mpd_play)
+--             mpd_sepl:set_image(beautiful.mpd_sepl)
+--             mpd_sepr:set_image(beautiful.mpd_sepr)
+--         else
+--             widget:set_markup("")
+--             play_pause_icon:set_image(beautiful.mpd_play)
+--             mpd_sepl:set_image(nil)
+--             mpd_sepr:set_image(nil)
+--         end
+--     end
+-- })
 
-musicwidget = wibox.widget.background()
-musicwidget:set_widget(mpdwidget)
-musicwidget:set_bgimage(beautiful.widget_display)
-musicwidget:buttons(awful.util.table.join(awful.button({ }, 1,
-function () awful.util.spawn_with_shell(ncmpcpp) end)))
-prev_icon:buttons(awful.util.table.join(awful.button({}, 1,
-function ()
-    awful.util.spawn_with_shell("mpc prev || ncmpcpp prev")
-    mpdwidget.update()
-end)))
-next_icon:buttons(awful.util.table.join(awful.button({}, 1,
-function ()
-    awful.util.spawn_with_shell("mpc next || ncmpcpp next")
-    mpdwidget.update()
-end)))
-stop_icon:buttons(awful.util.table.join(awful.button({}, 1,
-function ()
-    play_pause_icon:set_image(beautiful.play)
-    awful.util.spawn_with_shell("mpc stop || ncmpcpp stop")
-    mpdwidget.update()
-end)))
-play_pause_icon:buttons(awful.util.table.join(awful.button({}, 1,
-function ()
-    awful.util.spawn_with_shell("mpc toggle || ncmpcpp toggle")
-    mpdwidget.update()
-end)))
+-- musicwidget = wibox.widget.background()
+-- musicwidget:set_widget(mpdwidget)
+-- musicwidget:set_bgimage(beautiful.widget_display)
+-- musicwidget:buttons(awful.util.table.join(awful.button({ }, 1,
+-- function () awful.util.spawn_with_shell(ncmpcpp) end)))
+-- prev_icon:buttons(awful.util.table.join(awful.button({}, 1,
+-- function ()
+--     awful.util.spawn_with_shell("mpc prev || ncmpcpp prev")
+--     mpdwidget.update()
+-- end)))
+-- next_icon:buttons(awful.util.table.join(awful.button({}, 1,
+-- function ()
+--     awful.util.spawn_with_shell("mpc next || ncmpcpp next")
+--     mpdwidget.update()
+-- end)))
+-- stop_icon:buttons(awful.util.table.join(awful.button({}, 1,
+-- function ()
+--     play_pause_icon:set_image(beautiful.play)
+--     awful.util.spawn_with_shell("mpc stop || ncmpcpp stop")
+--     mpdwidget.update()
+-- end)))
+-- play_pause_icon:buttons(awful.util.table.join(awful.button({}, 1,
+-- function ()
+--     awful.util.spawn_with_shell("mpc toggle || ncmpcpp toggle")
+--     mpdwidget.update()
+-- end)))
 
 -- | Mail | --
 
@@ -399,26 +397,26 @@ for s = 1, screen.count() do
 
     right_layout:add(spr)
 
-    right_layout:add(prev_icon)
-    right_layout:add(spr)
-    right_layout:add(stop_icon)
-    right_layout:add(spr)
-    right_layout:add(play_pause_icon)
-    right_layout:add(spr)
-    right_layout:add(next_icon)
-    right_layout:add(mpd_sepl)
-    right_layout:add(musicwidget)
-    right_layout:add(mpd_sepr)
+    -- right_layout:add(prev_icon)
+    -- right_layout:add(spr)
+    -- right_layout:add(stop_icon)
+    -- right_layout:add(spr)
+    -- right_layout:add(play_pause_icon)
+    -- right_layout:add(spr)
+    -- right_layout:add(next_icon)
+    -- right_layout:add(mpd_sepl)
+    -- right_layout:add(musicwidget)
+    -- right_layout:add(mpd_sepr)
 
-    right_layout:add(spr)
+    -- right_layout:add(spr)
 
-    right_layout:add(widget_mail)
-    right_layout:add(widget_display_l)
-    right_layout:add(mailwidget)
-    right_layout:add(widget_display_r)
-    right_layout:add(spr5px)
+    -- right_layout:add(widget_mail)
+    -- right_layout:add(widget_display_l)
+    -- right_layout:add(mailwidget)
+    -- right_layout:add(widget_display_r)
+    -- right_layout:add(spr5px)
 
-    right_layout:add(spr)
+    -- right_layout:add(spr)
 
     right_layout:add(widget_cpu)
     right_layout:add(widget_display_l)
